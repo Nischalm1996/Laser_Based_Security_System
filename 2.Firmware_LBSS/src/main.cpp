@@ -25,6 +25,7 @@ void setup()
   buzz.longBeep();
   // setting up LED
   ledObj.begin();
+  ledObj.blinkLED(300,10);
   // setting up GSM Module
   gsmObj.begin();
   // Setting up laser detection
