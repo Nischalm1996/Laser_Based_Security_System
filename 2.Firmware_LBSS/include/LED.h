@@ -28,14 +28,14 @@ public:
     {
         digitalWrite(_pin, LOW);
     }
-    void blinkLED(int duration, int iterations)
+    void blinkLED(unsigned int duration, int iterations)
     {
         int i;
 
         for (i = 0; i <= iterations; i++)
         {
             unsigned long previousMillis = 0;
-            Boolean ledstate;
+            boolean ledState = LOW;
             unsigned long currentMillis = millis();
 
             if ((ledState == HIGH) && (currentMillis - previousMillis >= duration))

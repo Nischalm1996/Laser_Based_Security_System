@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include "Buzzer.h"
+#include "LED.h"
+#include "LDR.h"
 //7899302011 -- number to send SMS
 
 //Pin definitions to mind
@@ -12,14 +14,20 @@
 #define RX_GSM 3
 #define TX_GSM 4
 
+//creating classes
+Buzzer buzz(BUZZER);
+Led ledObj(LED);
+LDR ldrObj(DETECT);
+
 void setup()
 {
   // Setting up buzzer
-  Buzzer buzz(BUZZER);
   buzz.longBeep();
   // setting up LED
-  Led ledObj(LED);
-  ledObj.blinkLED(500, 3);
+  ledObj.ledOn();
+  delay(1000);
+  ledObj.ledOff();
+
   // setting up GSM Module
   // Setting up laser detection
   // setting up laser transmission
@@ -27,4 +35,11 @@ void setup()
 
 void loop()
 {
+  if(ldrObj.readInput())
+  {
+    ledObj.ledOn();
+  }
+  else {
+    ledObj.ledOff();
+  }
 }
