@@ -2,11 +2,12 @@
 #include "Buzzer.h"
 #include "LED.h"
 #include "LDR.h"
+#include "LASER.h"
 //7899302011 -- number to send SMS
 
 //Pin definitions to mind
-#define LASER 5
-#define LASER1 6
+#define LASER_PIN 5
+#define LASER1_PIN 6
 #define BUZZER 8
 #define LED 10
 #define DETECT 2
@@ -18,6 +19,7 @@
 Buzzer buzz(BUZZER);
 Led ledObj(LED);
 LDR ldrObj(DETECT);
+LASER laserObj(LASER_PIN);
 
 void setup()
 {
@@ -30,6 +32,18 @@ void setup()
 
   // setting up GSM Module
   // Setting up laser detection
+  laserObj.laserOn();
+  delay(20);
+  laserObj.laserOff();
+  delay(20);
+  laserObj.laserOn();
+  delay(20);
+  laserObj.laserOff();
+  delay(20);
+  laserObj.laserOn();
+  delay(20);
+  laserObj.laserOn();
+
   // setting up laser transmission
 }
 
@@ -37,9 +51,9 @@ void loop()
 {
   if(ldrObj.readInput())
   {
-    ledObj.ledOn();
+    ledObj.ledOff();
   }
   else {
-    ledObj.ledOff();
+    ledObj.ledOn();
   }
 }
