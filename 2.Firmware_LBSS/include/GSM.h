@@ -7,34 +7,44 @@ Member functions
 #define _GSM_H
 #include "Arduino.h"
 #include <SoftwareSerial.h>
+#include <Sim800L.h>
+#define RX_GSM 3
+#define TX_GSM 4
 
-class GSM
+Sim800L GSM(_RX_pin, _TX_pin);
+
+class Gsm
 {
 public:
-    int _RX_pin, _TX_pin;
-    GSM(int RX, int TX)
+    
+    void begin()
     {
-        _RX_pin = RX;
-        _TX_pin = TX;
+        Serial.begin(9600);
+        GSM.begin(4800);
+        GSM.delAllSms(); // this is optional
+        while (!GSM.prepareForSmsReceive())
+        {
+            delay(1000);
+        }
     }
-    begin()
+    void readMessage()
     {
-        SoftwareSerial mySerial(_TX_pin, _RX_pin); //SIM800L Tx & Rx
-        mySerial.begin(9600);
-    }
-    void sendMessage(String number, String text)
-    {
-        String _number = "AT+CMGS=\+"+number+"\ ";
-        this.mySerial.println("AT"); //Once the handshake test is successful, it will back to OK
-        updateSerial();
+        byte index = GSM.checkForSMS();
+        if (index != 0)
+        {
+            String sms =  GSM.readSms(index);
 
-        mySerial.println("AT+CMGF=1"); // Configuring TEXT mode
-        updateSerial();
-        mySerial.println(_number); //change ZZ with country code and xxxxxxxxxxx with phone number to sms
-        updateSerial();
-        mySerial.print(text); //text content
-        updateSerial();
-        mySerial.write(26);
+        }
+    }
+    void deleteSMS()
+    {
+        return(delAllSms());
+    }
+    boolean sendMessage(String text,String number)
+    {
+        GSM.begin(4800);
+        error = GSM.sendSms(number, text);
+        return error;
     }
 };
 
