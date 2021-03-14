@@ -8,17 +8,21 @@ Member functions
 #include "Arduino.h"
 #include <SoftwareSerial.h>
 #include <Sim800L.h>
+#include "LASER.h"
+
 #define RX_GSM 3
 #define TX_GSM 4
+char* PHONE = "919060344544";
 
-Sim800L GSM(_RX_pin, _TX_pin);
-
+Sim800L GSM(RX_GSM, TX_GSM);
+LASER laser(LASER_PIN);
 class Gsm
 {
 public:
-    
     void begin()
     {
+        laser.begin();
+        laser.laserOn();
         Serial.begin(9600);
         GSM.begin(4800);
         GSM.delAllSms(); // this is optional
@@ -27,24 +31,56 @@ public:
             delay(1000);
         }
     }
-    void readMessage()
+    void readMessageAndRespond()
     {
         byte index = GSM.checkForSMS();
+        String sms;
         if (index != 0)
         {
-            String sms =  GSM.readSms(index);
-
+            sms = GSM.readSms(index);
         }
+        if (sms.equals("ON"))
+        {
+            // Send SMS saying Laser is alread on if Switched on else switch it on.
+            if (LASER_STATUS)
+            {
+                //send message saying already on
+                sendMessage("Laser Security System Already ON!", PHONE);
+            }
+            else
+            {
+                laser.laserOn();
+                sendMessage("Laser Security System Turned ON!", PHONE);
+            }
+        }
+        else if (sms.equals("OFF"))
+        {
+            if (!LASER_STATUS)
+            {
+                //send message saying already off
+                sendMessage("Laser Security System Already OFF!", PHONE);
+            }
+            else
+            {
+                laser.laserOff();
+                sendMessage("Laser Security System Turned OFF!", PHONE);
+            }
+        }
+        else
+        {
+            //send sms saying didnt understand.send ON or OFF for operations.
+        }
+        //delete all SMS on 800L
+        deleteSMS();
     }
     void deleteSMS()
     {
-        return(delAllSms());
+        return (GSM.delAllSms());
     }
-    boolean sendMessage(String text,String number)
+    void sendMessage(char* text, char* number)
     {
         GSM.begin(4800);
-        error = GSM.sendSms(number, text);
-        return error;
+        GSM.sendSms(number, text);
     }
 };
 
