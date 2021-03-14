@@ -35,23 +35,28 @@ public:
     {
         int i;
 
-        for (i = 0; i <= iterations; i++)
+        for (i = 0; i <= (iterations*2); i++)
         {
             unsigned long previousMillis = 0;
-            boolean ledState = LOW;
             unsigned long currentMillis = millis();
+            int ledState = LOW;
+            if (currentMillis - previousMillis >= duration)
+            {
+                // save the last time you blinked the LED
+                previousMillis = currentMillis;
 
-            if ((ledState == HIGH) && (currentMillis - previousMillis >= duration))
-            {
-                ledState = LOW;                 // Turn it off
-                previousMillis = currentMillis; // Remember the time
-                digitalWrite(_pin, ledState);   // Update the actual LED
-            }
-            else if ((ledState == LOW) && (currentMillis - previousMillis >= duration))
-            {
-                ledState = HIGH;                // turn it on
-                previousMillis = currentMillis; // Remember the time
-                digitalWrite(_pin, ledState);   // Update the actual LED
+                // if the LED is off turn it on and vice-versa:
+                if (ledState == LOW)
+                {
+                    ledState = HIGH;
+                }
+                else
+                {
+                    ledState = LOW;
+                }
+
+                // set the LED with the ledState of the variable:
+                digitalWrite(_pin, ledState);
             }
         }
     }
