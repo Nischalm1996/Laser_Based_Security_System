@@ -1,6 +1,6 @@
 # Laser_Based_Security_System
 
-##Pin Connections
+## Pin Connections
 
 - LASER---------------------------->D5
 - LASER1--------------------------->D6
