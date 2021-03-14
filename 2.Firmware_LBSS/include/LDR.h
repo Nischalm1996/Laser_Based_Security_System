@@ -14,6 +14,9 @@ public:
     LDR(int x)
     {
         _pin = x;
+    }
+    void begin()
+    {
         pinMode(_pin, INPUT);
     }
     boolean readInput()

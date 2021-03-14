@@ -19,6 +19,10 @@ public:
         _pin = x;
         pinMode(_pin, OUTPUT);
     }
+    void begin()
+    {
+        pinMode(_pin, OUTPUT);
+    }
     void laserOn()
     {
         digitalWrite(_pin, HIGH);

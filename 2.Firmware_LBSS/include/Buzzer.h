@@ -1,7 +1,8 @@
 /*
 Class for controlling buzzer
 Member Funcions:
-1. begin(int pin) in void setup
+0.Buzzer(int pin)
+1. begin() in void setup
 2. beep()
 3. shortBeep()
 4. longBeep() 
@@ -20,6 +21,9 @@ public:
   Buzzer(int x)
   {
     _pin = x;
+  }
+  void begin()
+  {
     pinMode(_pin, OUTPUT);
   }
 

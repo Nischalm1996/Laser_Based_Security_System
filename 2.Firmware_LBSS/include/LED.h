@@ -18,6 +18,9 @@ public:
     Led(int x)
     {
         _pin = x;
+    }
+    void begin()
+    {
         pinMode(_pin, OUTPUT);
     }
     void ledOn()
