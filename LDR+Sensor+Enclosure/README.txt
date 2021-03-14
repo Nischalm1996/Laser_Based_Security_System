@@ -1,1 +1,0 @@
-LDR Sensor Enclosure by 1CM69 on Thingiverse: https://www.thingiverse.com/thing:4667005
