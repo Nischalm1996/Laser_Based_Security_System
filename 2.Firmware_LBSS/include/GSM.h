@@ -12,7 +12,7 @@ Member functions
 
 #define RX_GSM 3
 #define TX_GSM 4
-char* PHONE = "919060344544";
+char PHONE[21] = "919060344544";
 
 Sim800L GSM(RX_GSM, TX_GSM);
 LASER laser(LASER_PIN);

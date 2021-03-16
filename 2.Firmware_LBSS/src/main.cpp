@@ -12,7 +12,7 @@
 #define LED 10
 #define DETECT 2
 #define DETECT1 7
-
+AZ
 //creating classes
 Buzzer buzz(BUZZER);
 Led ledObj(LED);
@@ -25,9 +25,10 @@ void setup()
   buzz.longBeep();
   // setting up LED
   ledObj.begin();
-  ledObj.blinkLED(300,10);
   // setting up GSM Module
+  ledObj.blinkLED(300,10);
   gsmObj.begin();
+ gsmObj.sendMessage("System Turned On!",PHONE);
   // Setting up laser detection
   ldrObj.begin();
   // setting up laser transmission
