@@ -3,6 +3,7 @@
 #define _GSM_MODULE_H
 #include "Arduino.h"
 #include <SoftwareSerial.h>
+#include "LED.h"
 
 #define RX 4
 #define TX 3
@@ -10,6 +11,9 @@
 SoftwareSerial mySerial(RX, TX);
 char incomingByte;
 String inputString;
+
+Led led(10);
+boolean LASER_CONTROL = false;
 class GSM_MODULE
 {
 public:
@@ -65,10 +69,12 @@ public:
             if (inputString.indexOf("ON") > -1)
             {
                 digitalWrite(13, HIGH);
+                LASER_CONTROL = true;
             }
             if (inputString.indexOf("OFF") > -1)
             {
                 digitalWrite(13, LOW);
+                LASER_CONTROL = false;
             }
 
             delay(50);

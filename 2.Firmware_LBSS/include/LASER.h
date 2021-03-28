@@ -5,7 +5,6 @@ Member functions
 3.laserOff
  
 */
-boolean LASER_STATUS = false;
 
 #ifndef _LASER_H
 #define _LASER_H
@@ -13,6 +12,7 @@ boolean LASER_STATUS = false;
 
 #define LASER_PIN 5
 #define LASER1_PIN 6
+boolean LASER_STATUS = true;
 
 class LASER
 {

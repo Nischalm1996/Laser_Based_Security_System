@@ -7,7 +7,7 @@
 
 //7899302011 -- number to send SMS
 //SIM CARD number: 7348982783
-const char *PHONE = "+919060344544";
+const String PHONE = "+919060344544";
 
 //Pin definitions to mind
 #define BUZZER 8
@@ -23,39 +23,62 @@ LASER laserobj(LASER_PIN);
 
 void setup()
 {
-  // Setting up buzzer
-  buzz.begin();
-  buzz.beep(1000, 4000);
+  pinMode(13, OUTPUT);
 
-  // setting up LED
-  ledObj.begin();
-  ledObj.blinkLED(300, 10);
+  //LED Begin and turn ON and OFF
+  ledObj.ledOn();
+  delay(1500);
+  ledObj.ledOff();
 
-  // Setting up laser detection
-  ldrObj.begin();
-
-  // setting up laser transmission
+  //LASER System begin and ON
   laserobj.begin();
   laserobj.laserOn();
+  delay(2500);
+  laserobj.laserOff();
 
-  // setting up GSM Module
-  gsmObj.sendMessage("LBSS Turned On!", PHONE);
+  //Buzzer check
+  buzz.begin();
+  buzz.beep(3000, 5000);
+  laserobj.laserOn();
+  //LDR begin
+  ldrObj.begin();
+
+  //GSM send message
+
+  gsmObj.sendMessage("System initiated! \n Reply with 1.ON or 2.OFF to control system", PHONE);
   gsmObj.beginReadSMS();
 }
 
 void loop()
 {
-  //if laser goees off then led turns off
+  int8_t count = 0;
   if (LASER_STATUS)
   {
     if (ldrObj.readInput())
     {
       ledObj.ledOn();
+      buzz.beep(10, 4500);
+      count++;
     }
     else
     {
       ledObj.ledOff();
     }
+  }
+
+  if (count > 2)
+  {
+    //send GSM Message
+    gsmObj.sendMessage("INTRUDER DETECTED!!", PHONE);
+    count = 0;
+  }
+  if (LASER_CONTROL)
+  {
+    laserobj.laserOn();
+  }
+  else
+  {
+    laserobj.laserOff();
   }
 
   gsmObj.readSMSAndAct();
