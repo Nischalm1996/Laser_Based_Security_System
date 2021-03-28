@@ -5,6 +5,8 @@ Member functions
 3.laserOff
  
 */
+boolean LASER_STATUS = false;
+
 #ifndef _LASER_H
 #define _LASER_H
 #include "Arduino.h"
@@ -12,7 +14,6 @@ Member functions
 #define LASER_PIN 5
 #define LASER1_PIN 6
 
-boolean LASER_STATUS = false;
 class LASER
 {
 public:
@@ -30,12 +31,12 @@ public:
     void laserOn()
     {
         digitalWrite(_pin, HIGH);
-        LASER_STATUS  = true;
+        LASER_STATUS = true;
     }
     void laserOff()
     {
         digitalWrite(_pin, LOW);
-        LASER_STATUS  = false;
+        LASER_STATUS = false;
     }
 };
 #endif //LASER_H
