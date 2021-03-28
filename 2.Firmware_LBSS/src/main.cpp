@@ -2,7 +2,7 @@
 #include "Buzzer.h"
 #include "LED.h"
 #include "LDR.h"
-#include "GSM.h"
+#include "GSM_MODULE.h"
 #include "LASER.h"
 
 //7899302011 -- number to send SMS
@@ -18,7 +18,7 @@ const char *PHONE = "+919060344544";
 Buzzer buzz(BUZZER);
 Led ledObj(LED);
 LDR ldrObj(DETECT);
-Gsm gsmObj;
+GSM_MODULE gsmObj;
 LASER laserobj(LASER_PIN);
 
 void setup()
@@ -35,48 +35,28 @@ void setup()
   ldrObj.begin();
 
   // setting up laser transmission
+  laserobj.begin();
   laserobj.laserOn();
-  delay(5000);
-  laserobj.laserOff();
 
   // setting up GSM Module
-  gsmObj.sendMessage("Laser Based Security System Turned On!", PHONE);
-  gsmObj.beginRead();
+  gsmObj.sendMessage("LBSS Turned On!", PHONE);
+  gsmObj.beginReadSMS();
 }
 
 void loop()
 {
   //if laser goees off then led turns off
-  if (ldrObj.readInput())
+  if (LASER_STATUS)
   {
-    ledObj.ledOff();
-  }
-  else
-  {
-    ledObj.ledOn();
-  }
-
-//GSM reading message
-  String mess = gsmObj.readMessage();
-  if (mess.equals("ON"))
-  {
-    laserobj.laserOn();
-  }
-  else if (mess.equalsIgnoreCase("OFF"))
-  {
-    laserobj.laserOff();
-  }
-
-    if (LASER_STATUS)
+    if (ldrObj.readInput())
     {
-      if (ldrObj.readInput())
-      {
-        //send message
-        //gsmObj.sendMessage("INTRUDER DETECTED!!",PHONE);
-        // alert Buzzer
-        buzz.beep(800, 300);
-        // Blink LED
-        ledObj.blinkLED(500, 2);
-      }
+      ledObj.ledOn();
     }
+    else
+    {
+      ledObj.ledOff();
+    }
+  }
+
+  gsmObj.readSMSAndAct();
 }

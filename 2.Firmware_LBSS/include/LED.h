@@ -35,7 +35,7 @@ public:
     {
         int i;
 
-        for (i = 0; i <= (iterations*2); i++)
+        for (i = 0; i <= (iterations * 2); i++)
         {
             unsigned long previousMillis = 0;
             unsigned long currentMillis = millis();

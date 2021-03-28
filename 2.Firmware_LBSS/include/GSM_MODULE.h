@@ -34,7 +34,7 @@ public:
         {
             mySerial.println("AT");
             delay(1000);
-           // Serial.println("Connecting...");
+            // Serial.println("Connecting...");
         }
         //Serial.println("Connected!");
         mySerial.println("AT+CMGF=1"); //Set SMS to Text Mode
