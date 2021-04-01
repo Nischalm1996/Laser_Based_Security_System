@@ -12,7 +12,7 @@ Member functions
 
 #define LASER_PIN 5
 #define LASER1_PIN 6
-boolean LASER_STATUS = true;
+boolean LASER_STATUS = false;
 
 class LASER
 {

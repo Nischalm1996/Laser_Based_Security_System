@@ -20,44 +20,47 @@ Led ledObj(LED);
 LDR ldrObj(DETECT);
 GSM_MODULE gsmObj;
 LASER laserobj(LASER_PIN);
+int8_t count = 0;
 
 void setup()
 {
   pinMode(13, OUTPUT);
+  Serial.begin(9600);
 
   //LED Begin and turn ON and OFF
   ledObj.ledOn();
-  delay(1500);
+  delay(2000);
   ledObj.ledOff();
-
+  Serial.println("LEd test Done!");
   //LASER System begin and ON
   laserobj.begin();
   laserobj.laserOn();
   delay(2500);
   laserobj.laserOff();
+  Serial.println("Laser test Done!");
 
   //Buzzer check
   buzz.begin();
   buzz.beep(3000, 5000);
-  laserobj.laserOn();
+  Serial.println("Buzzer test Done!");
   //LDR begin
   ldrObj.begin();
 
   //GSM send message
 
-  gsmObj.sendMessage("System initiated! \n Reply with 1.ON or 2.OFF to control system", PHONE);
+  gsmObj.sendMessage("System initiated! Reply with ON or OFF to control system", PHONE);
   gsmObj.beginReadSMS();
 }
 
 void loop()
 {
-  int8_t count = 0;
-  if (LASER_STATUS)
+
+  if (LASER_CONTROL)
   {
     if (ldrObj.readInput())
     {
       ledObj.ledOn();
-      buzz.beep(10, 4500);
+      buzz.beep(1, 4500);
       count++;
     }
     else
@@ -66,19 +69,25 @@ void loop()
     }
   }
 
-  if (count > 2)
+  if (count >= 100)
   {
+    Serial.println("INTRUDER!!!");
     //send GSM Message
+    buzz.beep(10000, 3000);
     gsmObj.sendMessage("INTRUDER DETECTED!!", PHONE);
+    delay(10000);
     count = 0;
   }
+  Serial.println(count);
   if (LASER_CONTROL)
   {
     laserobj.laserOn();
+    //Serial.println("Laser On");
   }
   else
   {
     laserobj.laserOff();
+    //Serial.println("Laser Off");
   }
 
   gsmObj.readSMSAndAct();

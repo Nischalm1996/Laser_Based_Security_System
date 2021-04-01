@@ -30,6 +30,11 @@ public:
         mySerial.print(message);
         delay(500);
         mySerial.write(26);
+        delay(1000);
+        mySerial.println("AT+CNMI=1,2,0,0,0"); //Procedure to handle newly arrived messages(command name in text: new message indications to TE)
+        delay(1000);
+        mySerial.println("AT+CMGL=\"REC UNREAD\""); // Read Unread Messages
+        delay(500);
     }
     void beginReadSMS()
     {
@@ -46,6 +51,7 @@ public:
         mySerial.println("AT+CNMI=1,2,0,0,0"); //Procedure to handle newly arrived messages(command name in text: new message indications to TE)
         delay(1000);
         mySerial.println("AT+CMGL=\"REC UNREAD\""); // Read Unread Messages
+        delay(500);
     }
     void readSMSAndAct()
     {
@@ -63,18 +69,20 @@ public:
             delay(10);
 
             inputString.toUpperCase(); // Uppercase the Received Message
-            //Serial.println(inputString);
+            Serial.println(inputString);
 
             //turn RELAY ON or OFF
             if (inputString.indexOf("ON") > -1)
             {
                 digitalWrite(13, HIGH);
                 LASER_CONTROL = true;
+                Serial.println("ON");
             }
             if (inputString.indexOf("OFF") > -1)
             {
                 digitalWrite(13, LOW);
                 LASER_CONTROL = false;
+                Serial.println("OFF");
             }
 
             delay(50);
