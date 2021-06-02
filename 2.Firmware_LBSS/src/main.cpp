@@ -7,7 +7,7 @@
 
 //7899302011 -- number to send SMS
 //SIM CARD number: 7348982783
-const String PHONE = "+919060344544";
+const String PHONE = "+917899302011";
 
 //Pin definitions to mind
 #define BUZZER 8
